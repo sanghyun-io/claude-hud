@@ -93,11 +93,12 @@ This is a [Claude Code platform limitation](https://github.com/anthropics/claude
 
 **IMPORTANT**: Determine the platform from your environment context (`Platform:` value), NOT from `uname -s`. The Bash tool may report a different environment than the user's actual platform (e.g., Git Bash on Windows reports MINGW even when the user launched Claude Code from PowerShell).
 
-| Platform | Command Format |
-|----------|---------------|
-| `darwin` | bash (macOS) |
-| `linux` | bash (all Linux distros including NixOS, Ubuntu, Arch, etc.) |
-| `win32` | PowerShell (works universally on Windows 10+) |
+| Platform | Shell | Command Format |
+|----------|-------|---------------|
+| `darwin` | any | bash |
+| `linux` | any | bash |
+| `win32` | `bash` (Git Bash, MSYS2) | bash (same as macOS/Linux) |
+| `win32` | PowerShell / cmd | PowerShell |
 
 ---
 
@@ -134,6 +135,13 @@ This is a [Claude Code platform limitation](https://github.com/anthropics/claude
    ```
 
 **Windows** (Platform: `win32`):
+
+**First, detect the shell**: Check the `Shell:` value from the environment context (shown in the system prompt).
+- If Shell is `bash` (Git Bash, MSYS2): Use the **macOS/Linux instructions above** — they work identically in Git Bash since it provides a POSIX-compatible environment.
+- If Shell is `powershell`, `pwsh`, or `cmd`: Use the **PowerShell instructions below**.
+- If unsure, check for bash: `echo $BASH_VERSION` — if it outputs a version string, use the macOS/Linux instructions.
+
+**PowerShell instructions** (only when Shell is NOT bash):
 
 1. Get plugin path:
    ```powershell
